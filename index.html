@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Swagger.json diff descriptor</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+    <script type="text/javascript" src="deep-diff.min.js"></script>
+    <script type="text/javascript" src="script.js" ></script>
+    <script>
+    function compareVersions2(){
+      if (!versions['previous'] || !versions['current']){
+         document.getElementById("messages").innerHTML = 'Upload both previous and current version of the swagger.json before clicking "Compare versions"';
+      }
+    
+      var differences = DeepDiff.diff(versions['previous'], versions['current']);
+      document.querySelector("#results code").innerText= JSON.stringify(differences, undefined, 2);
+    }
+    </script>
+  </head>
+  <body style="margin: 2em">
+	  <form>
+	    <label>Select <i>previous version</i> swagger.json
+	      <input type="file" id="file-input-previous" onchange="handleFileSelect('previous')">
+	    </label>
+	    <label>Select <i>current version</i> swagger.json
+	      <input type="file" id="file-input-current" onchange="handleFileSelect('current')">
+	    </label>	    
+	    <p>Uploaded swagger files will be compared.<br/> Results will be displayed below.</p>
+	    <p><button id="diff-button" type="button" onclick="compareVersions()">Compare Version</button></p>
+	  </form>
+	  <div id="messages"></div>
+	  <div id="results"></div>
+  </body>
+</html>		          		          

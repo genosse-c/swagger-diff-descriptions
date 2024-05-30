@@ -9,7 +9,7 @@ function handleFileSelect(which) {
     try{
       versions[which] = JSON.parse(reader.result);
     } catch(e){
-      document.getElementById("messages").innerText = 'Could not interpret your upload. Are you sure it is a JSON file?';)
+      document.getElementById("messages").innerText = 'Could not interpret your upload. Are you sure it is a JSON file?';
     }
   };
   reader.readAsText(file);
@@ -35,7 +35,7 @@ function compareVersions(previous, current){
   });
 
   //converts the hierarchical changelog list into HTML to display results as nested lists
-  document.querySelector("#results").innerHTML = prettyPrintChangelogDetails(changelog, [], 'root').join("\n");
+  document.querySelector("#results").innerHTML = prettyPrintChangelog(changelog, [], 'root').join("\n");
   
   //adds behavior to toggle parts of the structure 
   const toEls = document.querySelectorAll('li.path span.toggle');
@@ -79,6 +79,7 @@ function convertChangelogItem(change, branch){
 function prettyPrintChangelog(cl,html,parent){
   let keys = Object.keys(cl);
   
+  // output for leaf nodes
   if (keys.includes('type') && cl['type'] == 'leaf'){
     html.push('<ul class="path change-container">');
     html.push('<li class="path change-container"><span class="changed-property">'+parent+'</span>');
@@ -92,11 +93,12 @@ function prettyPrintChangelog(cl,html,parent){
       html.push('<li class="text text-current"><span>To</span><pre><code>'+JSON.stringify(cl['text']['current'], undefined, ' ')+'</code></pre></li>');
     }
     html.push('</ul></li></ul>');
-    
+  //output for structure nodes
   } else {
     html.push('<ul class="path">');
     html.push('<li class="path"><span class="toggle">'+parent+'</span>');
-    console.log(parent)
+
+    // TODO: create links to documentation for relevant elements...
     if(parent && parent.startsWith('/')){
       html.push('<a href="'+ getDocumentationLink(parent) +'" class="doc-link" target="_blank">⇗</a>');
     }
